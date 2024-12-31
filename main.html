@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Color</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .board {
+            width: 350px;
+            height: 420px;
+            display: grid;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        @keyframes color-thingie  {
+            0%   {background-color:red; left:0px; top:0px;}
+            25%  {background-color:yellow; left:200px; top:0px;}
+            50%  {background-color:blue; left:200px; top:200px;}
+            75%  {background-color:green; left:0px; top:200px;}
+            100% {background-color:red; left:0px; top:0px;}
+            
+          }
+        .color-thingie {
+            width: 100%;
+            cursor: pointer;
+            margin: 7px;
+            height: 48px;
+            
+        }
+
+        .end-colors {
+            border-radius: 50%;
+        }
+
+        .big-color {
+            width: 350px;
+            height: 200px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .color-picky {
+            width: 100%;
+            height: 47px;
+            border-radius: 10px;
+            margin: 1.5px;
+            text-align: center;
+        }
+        .color-picky:hover {
+            scale: 1.1;
+            border: 2px solid black;
+        }
+        .color-boxx {
+            width: 450px;
+            display: inline-flex;
+        }
+
+        .svg-del {
+            text-align: center;
+            margin: auto;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            padding: absolute;
+        }
+
+        .overlay {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            width: 95%;
+            height: 90%;
+            z-index: 100;
+            left: 2.5%;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            display: block;
+
+        }
+
+        .main {
+            margin-top: 50px;
+            width: 400px;
+            background-color: aliceblue;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        button {
+            width: auto;
+            margin: 20px;
+            width: 200px;
+            height: 70px;
+            font-size: 30px;
+            background-color: #89d0f2;
+            border-radius: 10px;
+            border: none;
+            scale: 1;
+            transition-duration: 0.4s;
+            color: black;
+        }
+        button:hover {
+            scale: 1.1;
+            background-color: #0ea1e5;
+        }
+        .stats {
+            display: none;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            text-align: center;
+
+        }
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    h2 {
+        margin: 20px;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay" id="overlay">
+        <div class="container">
+            <div class="main">
+                <button class="close-button" onclick="hideStats()">X</button>
+
+                <h1>Colorle</h1>
+
+                <h2 id="stats"></h2>
+
+                <button onclick="start()">Play again</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="big-color" style="background-color:red"></div>
+    </div>
+
+    <div class="container">
+        <div class="board">
+            <div class="row" id="row1">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+            <div class="row" id="row2">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+            <div class="row" id="row3">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+            <div class="row" id="row4">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+            <div class="row" id="row5">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+            <div class="row" id="row6">
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie"></div>
+                <div class="color-thingie end-colors"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="color-boxx" id="color-box-1">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="color-boxx" id="color-box-2">
+
+        </div>
+    </div>
+    <div class="container stats" id = "statsBtn">
+        <button onclick="stats()">Show stats</button>
+    </div>
+    <script>
+
+
+
+        let colors = [];
+        let correctColors = [];
+        let real_color = [];
+
+        let grid = [[], [], [], [], [], []];
+        let currentRow = 0;
+        let currentColumn = 0;
+        let currentColors = [];
+
+        let frozen = false;
+
+        function stats(){
+            let big = document.getElementById("overlay")
+            big.style.display="block"
+            big.animate({
+                top: ["100%", "0%"],
+                display: ["none", "block"]
+            }, {
+                duration: 300,
+                iterations: 1,
+                fill: "forwards"                
+            })
+        }
+
+        function hideStats(){
+            let big = document.getElementById("overlay")
+            
+            big.animate({
+                top: ["0%", "-2%",  "100%", "100%"],
+                display: ["block", "block", "none", "none"]
+            }, {
+                duration: 500,
+                iterations: 1,
+                fill: "forwards"                
+            })
+            big.style.top = "100%"
+        }
+
+        function gameOver(win) {
+            frozen = true;
+            
+            let stats = "You didnt get this Colorle, better luck next time!"
+            if (win) {
+                stats = `You got this Colorle in ${currentRow + 1} out of 6`
+            }
+            let el = document.getElementById("stats")
+            el.innerHTML = stats;
+
+            let big = document.getElementById("overlay")
+            big.style.display="block"
+            big.animate({
+                top: ["100%", "0%"],
+                display: ["none", "block"]
+            }, {
+                duration: 300,
+                iterations: 1,
+                fill: "forwards"                
+            })
+
+            let btn = document.getElementById("statsBtn")
+            btn.animate({
+                top: ["100%", "0%"],
+                display: ["none", "block"]
+            }, {
+                duration: 300,
+                iterations: 1,
+                fill: "forwards"                
+            })
+        }
+
+        function addBoarder() {
+            let all = document.querySelectorAll(".color-thingie")
+            all.forEach((item) => {
+                item.style.border = "4px solid gray"
+            })
+        }
+
+        function enterBtn() {
+            if (frozen) {
+                return
+            }
+            if (currentColors.length != 4) {
+                return
+            }
+            let calcColor = addColors(addColors(hexToRgb(currentColors[0]), hexToRgb(currentColors[1])), addColors(hexToRgb(currentColors[2]), hexToRgb(currentColors[3])))
+            let distence = 1 - (colorDistance(calcColor, real_color) / 441.6729559300637)
+            let final = document.getElementById(`row${currentRow + 1}`).childNodes[9]
+            final.style.backgroundColor = rgbToHex(calcColor)
+            final.innerHTML = (distence * 100).toString().split(".")[0] + "%"
+            final.style.textAlign = "center";
+            final.style.display = "flex";
+            final.style.alignItems = "center";
+            final.style.justifyContent = "center";
+            final.style.fontSize = "20px";
+            final.animate({
+                backgroundColor: [rgbToHex(calcColor)],
+                scale: [1, 1.2, 1],
+            }, {
+                duration: 400,
+                iterations: 1,
+                fill: "forwards"
+            })
+            let real_color_hex = []
+            correctColors.forEach((color) => {
+                real_color_hex.push(rgbToHex(color).replace("#", ""))
+            })
+            
+            for (let i = 1; i < 5; i++) {
+                console.log(i*2-1)
+                let kid = document.getElementById(`row${currentRow + 1}`).childNodes[i*2-1]
+                kid.animate({
+                    scale: [1, 1.1, 1],
+                }, {
+                    duration: 300,
+                    iterations: 1,
+                    fill: "forwards"
+                })
+            }
+
+            let num_correct = 0
+            if (real_color_hex.indexOf(currentColors[0]) != -1) {
+                document.getElementById(`row${currentRow + 1}`).childNodes[1].style.border = "4px solid green"
+                num_correct += 1
+            }
+            if (real_color_hex.indexOf(currentColors[1]) != -1) {
+                document.getElementById(`row${currentRow + 1}`).childNodes[3].style.border = "4px solid green"
+                num_correct += 1
+            }
+            if (real_color_hex.indexOf(currentColors[2]) != -1) {
+                document.getElementById(`row${currentRow + 1}`).childNodes[5].style.border = "4px solid green"
+                num_correct += 1
+            }
+            if (real_color_hex.indexOf(currentColors[3]) != -1) {
+                document.getElementById(`row${currentRow + 1}`).childNodes[7].style.border = "4px solid green"
+                num_correct += 1
+            }
+            if (num_correct == 4) {
+                gameOver(true);
+            }
+            if(currentRow==5){
+                gameOver(false)
+            }
+            currentRow += 1
+            currentColumn = 0
+            currentColors = []
+            updateGrid()
+        }
+
+        function deleteColor() {
+            if (frozen) {
+                return
+            }
+            if (currentColumn >= 0) {
+
+                grid[currentRow].pop(-1);
+
+                updateGrid();
+                currentColumn = currentColors.length
+
+            }
+        }
+
+        function clickedColor(color) {
+            if (frozen) {
+                return
+            }
+            if (currentColors.indexOf(rgbToHex(color).toLowerCase().replace("#", "")) == -1) {
+                grid[currentRow][currentColumn] = color;
+                updateGrid();
+                if (currentColumn < 3) {
+                    currentColumn++;
+                }
+            }
+        }
+
+        function updateGrid() {
+            if (frozen) {
+                return
+            }
+            currentColors = [];
+            for (let i = 0; i < 6; i++) {
+                for (let j = 0; j < 4; j++) {
+                    try {
+                        let kid = document.getElementById(`row${i + 1}`).children[j]
+   
+                        if(currentColumn == j && i == currentRow){
+                            kid.animate({
+                                backgroundColor: [rgbToHex(grid[i][j])],
+                                scale: [1, 1.1, 1],
+                            }, {
+                                duration: 300,
+                                iterations: 1,
+                                fill: "forwards"
+                            })
+                        }else{
+                            kid.animate({
+                                backgroundColor: [rgbToHex(grid[i][j])],
+                            }, {
+                                duration: 300,
+                                iterations: 1,
+                                fill: "forwards"
+                            })
+                        }
+                        
+                        if (i == currentRow) {
+                            currentColors.push(rgbToHex(grid[i][j]).replace("#", ""))
+                        }
+                    } catch (e) {
+                        let kid = document.getElementById(`row${i + 1}`).children[j]
+                        kid.animate({
+                            backgroundColor: ["#ffffff"],
+                        }, {
+                            duration: 300,
+                            iterations: 1,
+                            fill: "forwards"
+                        })                    }
+                }
+            }
+
+            document.getElementById("color-box-1").childNodes.forEach((child) => {
+                if (child.id) {
+                    if (currentColors.indexOf(child.id.toString().toLowerCase()) != -1) {
+                        child.style.border = "2px solid red";
+                    } else {
+                        child.style.border = "2px solid #ffffff";
+                    }
+                }
+            });
+
+            document.getElementById("color-box-2").childNodes.forEach((child) => {
+                if (child.id) {
+                    if (currentColors.indexOf(child.id.toString().toLowerCase()) != -1) {
+                        child.style.border = "2px solid red";
+                    } else {
+                        child.style.border = "2px solid #ffffff";
+                    }
+                }
+            });
+        }
+
+        document.onload = init();
+
+        function init() {
+            let big = document.getElementById("overlay")
+            big.style.display="none"
+            colors = [];
+            correctColors = [];
+            real_color = [];
+    
+            grid = [[], [], [], [], [], []];
+            currentRow = 0;
+            currentColumn = 0;
+            currentColors = [];
+            addBoarder()
+            make_all_of_the_colors();
+            make_real_color();
+        }
+
+        function start() {
+            hideStats()
+            colors = [];
+            correctColors = [];
+            real_color = [];
+    
+            grid = [[], [], [], [], [], []];
+            currentRow = 0;
+            currentColumn = 0;
+            currentColors = [];
+            addBoarder()
+            make_all_of_the_colors();
+            make_real_color();
+        }
+
+        function make_real_color() {
+            correctColors = [];
+            real_color = [];
+            var bucket = [];
+            for (let i = 0; i <= colors.length; i++) {
+                bucket.push(colors[i]);
+            }
+            for (let i = 0; i < 4; i++) {
+                let index = Math.floor(Math.random() * (bucket.length - 1));
+                correctColors.push(bucket[index]);
+                bucket.splice(index, 1);
+            }
+            real_color = addColors(addColors(correctColors[0], correctColors[1]), addColors(correctColors[2], correctColors[3]));
+            document.querySelector(".big-color").style.backgroundColor = rgbToHex(real_color);
+        }
+
+        function make_all_of_the_colors() {
+            colors = [];
+            let colors1 = document.getElementById("color-box-1");
+            let colors2 = document.getElementById("color-box-2");
+            for (let i = 0; i < 5; i++) {
+                colors1.childNodes.forEach((child) => {
+                    colors1.removeChild(child)
+                })
+                colors2.childNodes.forEach((child) => {
+                    colors2.removeChild(child)
+                })
+            }
+            for (let i = 0; i < 7; i++) {
+                let div1 = document.createElement("div");
+                let div2 = document.createElement("div");
+                div1.className = "color-picky";
+                div2.className = "color-picky";
+                let c1 = getRandomColor();
+                let c2 = getRandomColor();
+                div1.style.backgroundColor = c1;
+                div2.style.backgroundColor = c2;
+                div1.style.border = "2px solid #ffffff"
+                div2.style.border = "2px solid #ffffff"
+                div1.onclick = function () {
+                    clickedColor(hexToRgb(c1));
+                }
+                div2.onclick = function () {
+                    clickedColor(hexToRgb(c2));
+                }
+                div1.id = c1.replace("#", "");
+                div2.id = c2.replace("#", "");
+                colors.push(hexToRgb(c1));
+                colors.push(hexToRgb(c2));
+                colors1.appendChild(div1);
+                colors2.appendChild(div2);
+            }
+            let del = document.createElement("div");
+            var svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+            var icon = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+            icon.setAttribute("d", "M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z");
+            icon.style.stroke = "black"
+            svg.className = "svg-del";
+            svg.style.height = "24px";
+            svg.style.width = "24px";
+            svg.style.transform = "translateY(50%)";
+
+            svg.appendChild(icon);
+            del.appendChild(svg);
+            del.className = "color-picky";
+            del.style.backgroundColor = "lightgray";
+            del.onclick = function () {
+                deleteColor();
+            }
+            colors1.appendChild(del);
+
+            let enter = document.createElement("div");
+            enter.className = "color-picky";
+            enter.style.backgroundColor = "lightgray";
+            enter.style.textAlign = "center";
+            enter.style.display = "flex";
+            enter.style.alignItems = "center";
+            enter.style.justifyContent = "center";
+            enter.innerHTML = "Enter";
+            enter.onclick = function () {
+                enterBtn();
+            }
+            colors2.appendChild(enter);
+
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            if (document.getElementById(color.replace("#", ""))) {
+                return getRandomColor();
+            }
+            return color;
+        }
+
+        function htmlRgbToHex(rgb){
+            console.log(rgb)
+            rgb = rgb.replace("rgb(","").replace(" ","").replaceAll(")","").split(",")
+            console.log(rgb)
+            let hex = rgbToHex([parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])])
+
+            return hex
+        }
+
+        function componentToHex(c) {
+            var hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
+
+        function rgbToHex(rbg) {
+            return "#" + componentToHex(rbg[0]) + componentToHex(rbg[1]) + componentToHex(rbg[2]);
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace("#", "");
+            var result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
+        }
+
+        function addColors(color1, color2) {
+            let r = Math.floor((color1[0] + color2[0]) / 2);
+            let g = Math.floor((color1[1] + color2[1]) / 2);
+            let b = Math.floor((color1[2] + color2[2]) / 2);
+            return [r, g, b];
+        }
+
+        function colorDistance(color1, color2) {
+            const [r1, g1, b1] = color1;
+            const [r2, g2, b2] = color2;
+            return Math.sqrt(
+                Math.pow(r2 - r1, 2) +
+                Math.pow(g2 - g1, 2) +
+                Math.pow(b2 - b1, 2)
+            );
+        }
+
+
+    </script>
+</body>
+
+</html>
